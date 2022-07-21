@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>计算器</title>
+    <style>
+        table{
+            width: 300px;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <table border="10px solid pink" cellspacing="2" align="center" bgcolor="lightgray" bordercolor="white">
+        <tr>
+            <td colspan="4">
+                <input type="text" id="numInput" style="text-align: right;width: 300px;height: 40px;"/>
+            </td>
+        </tr>
+        <tr align="center"> 
+            <td onclick="OnClick(this)" colspan="2">AC</td>
+            <td onclick="OnClick(this)">清除</td>
+            <td onclick="OnClick(this)">÷</td>
+        </tr>
+        <tr  align="center">
+            <td onclick="OnClick(this)">1</td>
+            <td onclick="OnClick(this)">2</td>
+            <td onclick="OnClick(this)">3</td>
+            <td onclick="OnClick(this)">*</td>
+        </tr>
+        <tr  align="center">
+            <td onclick="OnClick(this)">4</td>
+            <td onclick="OnClick(this)">5</td>
+            <td onclick="OnClick(this)">6</td>
+            <td onclick="OnClick(this)">+</td>
+        </tr>
+        <tr  align="center">
+            <td onclick="OnClick(this)">7</td>
+            <td onclick="OnClick(this)">8</td>
+            <td onclick="OnClick(this)">9</td>
+            <td onclick="OnClick(this)">-</td>
+        </tr>
+        <tr  align="center">
+            <td onclick="OnClick(this)">.</td>
+            <td onclick="OnClick(this)">0</td>
+            <td onclick="OnClick(this)" colspan="2">=</td>
+        </tr>
+
+    </table>
+</body>
+<script type="text/javascript" src="作业2.js"></script>
+</html>
