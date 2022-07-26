@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>输入框防抖</title>
+</head>
+<body>
+   <div class="firstbox">
+    <div class="box">
+        <div class="btn"></div>
+        <input type="text" id="iph" value="" />
+    </div>
+    <div class="content"></div>
+   </div>
+</body>
+<script type="text/javascript">
+    var iph=document.getElementById("iph");
+    iph.oninput=deb(ajax,1000);
+    function deb(hand,delay){
+      var timer=null;
+      return function(){
+        var self=this;
+        var arg=arguments;
+        clearTimeout(timer);
+        timer=setTimeout(function(){
+            hand.apply(self,arg);
+        },delay)
+      }
+    }
+    function ajax(e){
+      console.log(e+""+this.value);
+    }
+</script>
+</html>
