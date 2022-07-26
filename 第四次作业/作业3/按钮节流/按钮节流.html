@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>按钮节流</title>
+</head>
+<body>
+  <button id="jieliu">节流</button>
+</body>
+<script type="text/javascript">
+    function jieliu(fn,wait){
+       let task=null;
+       return function(){
+        if(!task){
+            console.log("设置了定时器");
+            task=setTimeout(()=>{
+           task=null;
+           fn.apply(this,arguments)
+            },wait)
+        }
+       }
+    }
+    function bt(){
+        console.log("bt函数执行");
+    }
+    var btn=document.getElementById("jieliu");
+    btn.addEventListener("click",jieliu(bt,2000));
+</script>
+</html>
