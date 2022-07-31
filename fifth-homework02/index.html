@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>备忘录</title>
+		<script src='./js/vue.js'></script>
+		<script src='./js/axios.js'></script>
+		<script src='js/jquery.js'></script>
+        <style>
+			*{
+				margin:0;
+				padding:0;
+			}
+			.app{
+				margin:0 auto;
+				width:1000px;
+				height: 400px;
+				border:2px solid grey;
+			}
+			.app .long{
+				height:50px;
+				text-align: center;
+				line-height:50px;
+				background-color:pink
+			}
+			.app .left{
+				width:300px;
+				height:350px;
+				float:left;
+			}
+			.app .right{
+				width:700px;
+				height:350px;
+				float:left;
+			}
+			.app .right .top{
+				width:700px;
+				height:280px;
+				overflow-y:scroll;
+			}
+			.app .right .bottm{
+				border-top:1px solid black;
+				overflow:hidden;
+				height:69px;
+				text-align:center;
+			}
+			.app li{
+				list-style-type:none;
+				cursor:pointer;
+			}
+			.app li:hover{
+				color:blueviolet;
+			}
+			.app button:hover{
+				background-color: red;
+				color:white;
+			}
+			.app .left>ul>li{
+				margin-top:2rem;
+				margin-left:2rem;
+			}
+			.blue{
+				color:blue;
+			}
+		</style>
+	</head>
+	<body>
+		<div id='app' class='app'>
+			<div class='long'><h1>备忘录</h1></div>
+			<div class='left'>
+				<ul>
+					<li><b>增加数据</b><br><input placeholder='数据' v-model='insert'><button v-on:click='insert_f()'>写入</button></li>
+					<li><b>查询数据</b><br><input placeholder='数据' v-model='find'><button v-on:click='find_f()'>查询</button></li>
+					<li><b>改变数据</b>
+					    <ul>
+					         <li><input placeholder='原数据' v-model='updata'></li>
+							 <li><input placeholder='修改后的数据' v-model='updatas'></li>
+				     	</ul><button v-on:click='updata_f()'>改变</button></li>
+					<li><b>删除数据</b><br><input placeholder='数据' v-model='del'><button v-on:click='del_f()'>删除</button></li>
+					<li v-on:click='removeAll()'>删除全部数据</li>
+				</ul>
+			</div>
+			<div class='right'>
+				<b>有<b class='blue'>{{list}}</b>条数据</b>
+				<div class=top>
+					<ol>
+						<li v-for='(item,index) in list'>{{index}}.{{item.data}}</li>
+					</ol>
+				</div>
+				<div class='bottm'>
+					{{inform}}
+				</div>
+			</div>
+		</div>
+	</body>
+	<script>
+	
+		const vue=new Vue({
+			el:'#app',
+			data:{
+				list:[],
+				list:0,
+				insert:'',
+				find:'',
+				updata:"",
+				updatas:"",
+				del:'',
+				inform:'没有操作',
+			},
+			methods:{
+				insert_f:function(){
+					axios.get('http://localhost:9999/insert',{params:{"data":this.insert}}).then((a)=>{
+						let temp=a.data.ops[0].data;
+						this.inform=`添加了：${temp}`;
+					}).catch((s)=>{
+						this.insform='添加失败';
+					});
+					this.show();
+				},
+				find_f:function(){
+					axios.get('http://localhost:9999/find',{params:{"data":this.find}}).then((a)=>{
+						let temp=a.data[0].data;
+						this.inform='找到了'+temp+'';
+					}).catch((s)=>{
+						this.inform='查询的数据不存在';
+					})
+					this.show();
+				},
+				updata_f:function(){
+					axios.get('http://localhost:9999/updata',{params:{'old':this.updata,'news':this.updatas}}).then((a)=>{
+			           let news=a.config.params.news;
+					   let old=a.config.old.params.old;
+					   this.inform='<b>'+old+'</b>替换成了<b>'+news+'</b>';
+					}).catch((s)=>{
+						this.infrom='替换失败';
+					})
+					this.show();
+				},
+				del_f:function(){
+					axios.get('http://localhost:9999/del',{params:{"data":this.del}}).then((a)=>{
+						let temp=a.config.params.data;
+						this.inform=`删除了${temp}`;
+					}).catch((s)=>{
+						this.inform='数据不存在';
+					})
+					this.show();
+				},
+				removeAll:function(){
+					axios.get('http://localhost:9999/remove').then((a)=>{
+						console.log(a);
+						console.log('删除成功了');
+					}).catch((s)=>{
+						console.log('删除失败');
+					});
+					this.show();
+				},
+				show:function(){
+					axios.get('http://localhost:9999/show').then((a)=>{
+						this.list=a.data;
+						this.listLength=this.list.length;
+						console.log('显示成功');
+					}).catch((s)=>{
+						console.log('显示失败');
+					})
+				},
+			}
+		})
+		vue.show();
+	</script>
+</html>
+
