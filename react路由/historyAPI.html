@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="gallery">
+        <a href="https://cdn.css-tricks.com/peter.html">
+          <img src="bill.png" alt="Peter" class="peter" data-name="peter">
+        </a>
+        <a href="https://cdn.css-tricks.com/ray.html">
+          <img src="ray.png" alt="Ray" class="ray" data-name="ray">
+        </a>
+        <a href="https://cdn.css-tricks.com/egon.html">
+          <img src="egon.png" alt="Egon" class="egon" data-name="egon">
+        </a>
+        <a href="https://cdn.css-tricks.com/winston.html">
+          <img src="winston.png" alt="Winston" class="winston" data-name="winston">
+        </a>
+      </div>
+      
+      <p class="selected">Ghostbusters</p>
+      <p class="highlight"></p>
+      <!--放置了一个空的div.content，用来存放当演员图片被点击时显示在下放的文字。-->
+      <div class="content"></div>
+</body>
+<script>
+var container = document.querySelector('.gallery');
+container.addEventListener('click', function(e) {
+  if (e.target != e.currentTarget) {
+    //该方法将通知 Web 浏览器不要执行与事件关联的默认动作（如果存在这样的动作）。例如，如果 type 属性是 "submit"，在事件传播的任意阶段可以调用任意的事件句柄，通过调用该方法，可以阻止提交表单。
+    e.preventDefault();
+    // e.target is the image inside the link we just clicked.
+  }
+  //防止事件冒泡到DOM树上，也就是不触发的任何前辈元素上的事件处理函数。
+  e.stopPropagation();
+}, false);
+var data = e.target.getAttribute('data-name'),
+url = data + ".html";
+//history.pushState(state, title[, url]),state状态对象是一个 JavaScript 对象，它与pushState()创建的新历史记录条目相关联。title当前大多数浏览器都忽略此参数.
+history.pushState(null, null, url);
+//通过 History.pushState() 来更新网页的 url，同时又不会使页面刷新。
+history.pushState(data, null, url);
+//当浏览器的后退和前进按钮被点击时会触发popstate事件。
+window.addEventListener('popstate', function(e) {
+  // e.state表示上一个被点击的图片的data-attribute
+});
+function requestContent(file) {
+    //$().load(url, data, fn),url必选参数，表示被加载的页面地址,data可选参数，表示发送到服务器的数据,fn可选参数，表示请求完成后的回调函数.
+  $('.content').load(file + ' .content');
+}
+
+window.addEventListener('popstate', function(e) {
+  var character = e.state;
+  if (character == null) {
+    removeCurrentClass();
+    textWrapper.innerHTML = " ";
+    content.innerHTML = " ";
+    document.title = defaultTitle;
+  } else {
+      updateText(character);
+      requestContent(character + ".html");
+      addCurrentClass(character);
+      document.title = "Ghostbuster | " + character;
+  }
+});
+</script>
+</html>

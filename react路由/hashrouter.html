@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="root"></div>
+    <a href="#/a">去/a</a>
+    <a href="#/b">去/b</a>
+</body>
+<script>
+    //更新页面而切换路由，重新渲染所产生的白屏等待时间必然会影响到用户体验。为了在不刷新页面的同时控制更新 url，前端首先出现了 Hash Router
+    //React路由有两种实现方式：HashRouter:利用hash实现路由切换,BrowserRouter：利用h5 Api实现路由切换
+    let root=document.getElementById("root");
+    window.addEventListener("hashchange",(event)=>{
+        let hash=window.location.hash;//location.hash可以用来获取或设置页面的标签值,读取时，可以用来判断网页状态是否改变；写入时，则会在不重载网页的前提下，创造一条访问历史记录。
+        root.innerHTML=hash;
+    })
+    //模拟点击切换页面，每当浏览器里的hash值发生变化之后，就会触发一个事件，叫hashchange，这个函数有一个回调，可以通过window.location.hash拿到当前的hash值。
+</script>
+<script>
+//单页应用（缩写SPA）是一种网络应用程序或网站的模型，它通过动态重写当前页面来与用户交互，而非传统的从服务器重新加载整个新页面。
+</script>
+<script>
+    //vue router
+    // 1. 定义 (路由) 组件 - 可以从其他文件 import 进来
+const Foo = { template: '<div>foo</div>' }
+const Bar = { template: '<div>bar</div>' }
+// 2. 定义路由 - 每个路由应该映射一个组件
+const routes = [
+  { path: '/foo', component: Foo },
+  { path: '/bar', component: Bar },
+]
+// 3. 创建 router 实例，然后传 `routes` 配置
+const router = new VueRouter({ routes })
+//react router
+export default function App() {
+    //<nav> 标签表示一个页面中的某个部分，目的是提供导航链接
+  return (
+    <Router>
+      <div>
+        <nav><Link to="/">Home</Link></nav>
+        <nav><Link to="/about">About</Link></nav>
+        <Switch>
+          <Route path="/about">
+            <About />
+          </Route>
+          <Route path="/">
+            <Home />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
+  );
+}
+</script>
+</html>
