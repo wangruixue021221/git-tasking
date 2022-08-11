@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p><slot name="my-text">My default text</slot></p>
+    <my-paragraph>
+        <span slot="my-text">Let's have some different text!</span>
+      </my-paragraph>
+      <Kying-star></Kying-star>
+      <!--Template 为 Vue 对 HTML 的语法拓展-->
+     <template>
+      <div class="list">
+        <p v-for="item in list">Name: {{item.name}}, Score: {{item.score}}</p>
+      </div>
+     </template>
+</body>
+<script>
+    //插槽（slot）“的概念，即通过使用插槽可以让页面内容的组织更加灵活。
+    //html标记有个基类对象 HTMLElement .其它标记从这个类继承.
+//// 先定义一个类,要从HTMLElement继承
+class KyingStarButton extends HTMLElement{
+    constructor(){
+    // 必须首先调用 super 方法
+    super();
+    // 元素的功能代码写在这里
+    const shadow=this.attachShadow({mode:"open"});
+    //ShadowDOM最大的用处是隔离外部环境用于封装组件。mode:‘open’ 外界js可以通过 影子节点的父元素parentDom.shadowRoot方法获得;mode:'closed’时，无法被外界js获取.
+    const template=document.createElement("div");
+    const style=document.createElement("style");
+    //通过模板字符串来创建
+    style.textContent=`button{
+        padding: 8px 16px;
+      background: #00A1D6;
+      color: #FFFFFF;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      border-radius: 2px;
+    }`;
+    template.innerHTML=`<button onClick="alert(${this.getAttribute("say")})">${this.getAttribute("text")}</button>`;
+    shadow.appendChild(template);
+    shadow.appendChild(style);
+    }
+}
+//customElements 标准对自定义元素的名字做了限制,自定义元素的名字必须包含一个破折号（-）
+customElements.define("kying-star",KyingStarButton);
+//组件写到同一个页面内
+//setAttribute()方法,增加一个指定名称和治的新属性，或者把一个现有属性设定为指定的值,elementNode.setAttribute(key,value),elementNode.getAttribute(key)：获取节点的属性，key是属性名称
+</script>
+<script>
+    //JAX:React 对 Javascript 的语法拓展
+const App=({list})=>{
+    <div className="list">{
+        list.map((item,index)=>{
+        <p key={index}>Name: {item.name}, Score: {item.score}</p>
+        })
+    }</div>
+};
+</script>
+</html>
